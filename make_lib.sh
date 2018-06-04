@@ -1,0 +1,1 @@
+gcc -shared -fPIC -pthread -o libreader.so reader.c
