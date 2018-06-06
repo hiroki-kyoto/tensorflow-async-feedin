@@ -21,8 +21,6 @@ def reader_setup(
 	reg4
 ):
 	reader = cdll.LoadLibrary(b'./libreader.so')
-	reader.r_alloc.restype = c_uint64
-	buf = reader.r_alloc(packages*points*channels)
 	reader.session.restype = c_uint64
 	reader_sess = reader.session(
 		b'/dev/fpga-ad', 
@@ -75,9 +73,7 @@ class ModelRunner:
 		''' replace your model here '''
                 self.w = tf.get_variable('w', initializer=[0.5])
                 self.x = tf.placeholder(dtype=tf.float32, shape=[self.packages, self.points, self.channels])
-                #self.y = self.x * self.w
-		#self.y = self.x + 1
-		self.y = tf.identity(self.x)
+                self.y = self.x * self.w
 
     def save_model(self, model_path):
         with self.graph.as_default():
