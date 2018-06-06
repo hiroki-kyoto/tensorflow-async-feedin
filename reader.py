@@ -94,13 +94,11 @@ class ModelRunner:
             saver.restore(self.sess, model_path)
 
     def run(self):
-        x = np.zeros([self.packages,self.points,self.channels])
+        x = np.zeros([self.packages,self.points,self.channels],dtype=np.float32)
         if not x.flags['C_CONTIGUOUS']:
             x = np.ascontiguous(x, dtype=x.dtype)
         x_ptr = cast(x.ctypes.data, POINTER(c_float))
         reader = cdll.LoadLibrary('./libreader.so')
-        reader.alloc_float_arr.restype = c_uint64
-        #ptr = reader.alloc_float_arr(self.packages*self.points*self.channels)
         t_beg = time.time()
 	RUN_TIME = 1000
 	counter = 0
